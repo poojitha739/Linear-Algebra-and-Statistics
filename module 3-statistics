@@ -1,0 +1,1720 @@
+% M.Tech CSE / AI & SE - Module 3
+% Descriptive and Frequentist Statistics
+% Modified version: Added Skewness and Kurtosis
+% ============================================================
+
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% ------------------------------------------------------------
+% PACKAGES
+% ------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{ragged2e}
+
+% ------------------------------------------------------------
+% THEME
+% ------------------------------------------------------------
+\usetheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+
+\definecolor{Navy}{RGB}{30,55,90}
+\definecolor{Blue}{RGB}{45,95,145}
+\definecolor{LightBlue}{RGB}{238,245,252}
+\definecolor{DarkGray}{RGB}{55,55,55}
+\definecolor{LightGray}{RGB}{245,246,248}
+\definecolor{MidGray}{RGB}{110,110,110}
+\definecolor{White}{RGB}{255,255,255}
+
+\setbeamercolor{normal text}{fg=DarkGray,bg=White}
+\setbeamercolor{frametitle}{fg=Navy,bg=White}
+\setbeamercolor{structure}{fg=Blue}
+\setbeamercolor{block title}{fg=White,bg=Navy}
+\setbeamercolor{block body}{fg=DarkGray,bg=LightBlue}
+
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamerfont{title}{size=\Huge,series=\bfseries}
+\setbeamerfont{subtitle}{size=\Large}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setbeamertemplate{itemize item}{\color{Blue}\small$\bullet$}
+\setbeamertemplate{itemize subitem}{\color{Blue}\scriptsize$\bullet$}
+\emergencystretch=3em
+
+% ------------------------------------------------------------
+% FOOTER
+% Total frames = 71
+% ------------------------------------------------------------
+\setbeamertemplate{footline}{
+  \leavevmode
+  \hbox{
+    \begin{beamercolorbox}[wd=.82\paperwidth,ht=2.7ex,dp=1.2ex,
+      leftskip=.4cm]{author in head/foot}
+      \scriptsize Descriptive and Frequentist Statistics
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[wd=.18\paperwidth,ht=2.7ex,dp=1.2ex,
+      center]{date in head/foot}
+      \scriptsize \insertframenumber/71
+    \end{beamercolorbox}
+  }
+}
+
+% ------------------------------------------------------------
+% COMMANDS
+% ------------------------------------------------------------
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Bias}{\operatorname{Bias}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+
+\newcommand{\important}[1]{
+\begin{block}{Important}
+#1
+\end{block}
+}
+
+\begin{document}
+
+% ============================================================
+% 1
+% ============================================================
+\begin{frame}
+\begin{center}
+\vspace{.7cm}
+{\color{Navy}\Huge\bfseries Descriptive and Frequentist Statistics}
+
+\vspace{.35cm}
+{\color{Blue}\Large Module 3: Descriptive Analysis and Statistical Estimation}
+
+\vspace{.9cm}
+\begin{tikzpicture}
+\draw[Navy,line width=1.2pt] (-4.8,0)--(4.8,0);
+\end{tikzpicture}
+
+\vspace{.8cm}
+{\large\bfseries Poojitha Santhosh}
+
+\vspace{.2cm}
+{\large M.Tech (AI \& SE)}
+
+\vspace{.2cm}
+{\normalsize Department of Computer Science and Engineering}
+
+\vfill
+{\small M.Tech Academic Presentation}
+\end{center}
+\end{frame}
+
+% ============================================================
+% 2
+% ============================================================
+\begin{frame}{Module Overview}
+\begin{itemize}
+\item Foundations: descriptive, inferential and frequentist statistics
+\item Population, sample, parameter and statistic
+\item Histogram and distribution analysis
+\item Mean, variance, standard deviation and standard error
+\item Skewness and kurtosis
+\item Order statistics, quantiles, IQR and outliers
+\item Covariance, correlation and covariance matrices
+\item PCA and multivariate Gaussian modelling
+\item Sampling, sampling distributions and Central Limit Theorem
+\item MSE, bias, variance, unbiasedness and consistency
+\item Confidence intervals and population proportions
+\item Parametric estimation: moments and maximum likelihood
+\item Non-parametric estimation: ECDF and KDE
+\item Statistical applications in Data Science and AI
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 3
+% ============================================================
+\begin{frame}{1. Introduction to Statistics}
+\begin{itemize}
+\item \textbf{Statistics} is the science of collecting, organizing, analyzing,
+interpreting and communicating data.
+\item It converts observations into quantitative evidence for decision-making.
+\item Two broad roles:
+\begin{enumerate}
+\item \textbf{Descriptive statistics}: summarize observed data.
+\item \textbf{Inferential statistics}: generalize from a sample to a population.
+\end{enumerate}
+\item In AI and Data Science, statistics supports experimentation,
+feature analysis, uncertainty quantification and model evaluation.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 4
+% ============================================================
+\begin{frame}{Descriptive, Inferential and Frequentist Statistics}
+\begin{block}{Descriptive statistics}
+Describes the data actually observed using tables, graphs and numerical summaries.
+\end{block}
+\begin{block}{Inferential statistics}
+Uses sample information to make statements about an underlying population.
+\end{block}
+\begin{block}{Frequentist statistics}
+Treats model parameters as fixed but unknown quantities and probability as
+long-run frequency under repeated sampling.
+\end{block}
+\important{A confidence interval is a procedure with a long-run coverage property,
+not a probability statement about a fixed parameter.}
+\end{frame}
+
+% ============================================================
+% 5
+% ============================================================
+\begin{frame}{Population, Sample, Parameter and Statistic}
+\begin{itemize}
+\item \textbf{Population}: complete set of units or outcomes of interest.
+\item \textbf{Sample}: subset observed from the population.
+\item \textbf{Parameter}: numerical characteristic of the population.
+\item \textbf{Statistic}: numerical quantity calculated from the sample.
+\end{itemize}
+\[
+\text{Population}\longrightarrow
+\boxed{\text{Sampling}}\longrightarrow
+\text{Sample}\longrightarrow
+\boxed{\text{Estimation}}\longrightarrow
+\text{Parameter}
+\]
+Examples:
+\[
+\mu=\text{population mean},\qquad
+\bar X=\text{sample mean}.
+\]
+\end{frame}
+
+% ============================================================
+% 6
+% ============================================================
+\begin{frame}{Parameter versus Statistic}
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Aspect} & \textbf{Parameter} & \textbf{Statistic}\\
+\midrule
+Refers to & Population & Sample\\
+Typical notation & $\mu,\sigma^2,p$ & $\bar X,S^2,\hat p$\\
+Usually known? & No & Computable\\
+Role & Target quantity & Estimator/summary\\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{.3cm}
+\begin{itemize}
+\item A statistic may be used as an \textbf{estimator} of a parameter.
+\item Repeated samples produce different statistic values.
+\item A parameter is fixed for a specified population/model.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 7
+% ============================================================
+\begin{frame}{Statistics in Data Science and AI}
+\begin{itemize}
+\item \textbf{EDA}: identify central tendency, spread, skewness and anomalies.
+\item \textbf{Feature engineering}: detect redundant or highly correlated variables.
+\item \textbf{PCA}: reduce dimension using covariance structure.
+\item \textbf{Machine learning}: estimate parameters and quantify prediction error.
+\item \textbf{Experimentation}: compare treatments, models or algorithms.
+\item \textbf{Anomaly detection}: identify observations inconsistent with the data.
+\item \textbf{Uncertainty}: confidence intervals and sampling distributions
+help communicate reliability.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 8
+% ============================================================
+\begin{frame}{Example: Statistical Analysis of Features}
+Suppose a dataset contains student features:
+\[
+X_1=\text{study hours},\quad X_2=\text{attendance},\quad
+X_3=\text{previous score}.
+\]
+A statistical workflow is:
+\begin{enumerate}
+\item inspect distributions with histograms;
+\item calculate mean, median and standard deviation;
+\item calculate skewness and kurtosis;
+\item detect outliers using IQR;
+\item calculate covariance/correlation;
+\item construct the covariance matrix;
+\item use PCA if dimensionality reduction is required.
+\end{enumerate}
+\important{The objective is not merely to calculate numbers, but to understand
+the structure and uncertainty in the data.}
+\end{frame}
+
+% ============================================================
+% 9
+% ============================================================
+\begin{frame}{2. Histogram: Definition and Purpose}
+\begin{itemize}
+\item A histogram is a graphical representation of the distribution of
+a quantitative variable.
+\item The numerical range is divided into \textbf{bins} or intervals.
+\item The height represents frequency, relative frequency or density.
+\item Unlike a bar chart, histogram bars represent adjacent numerical intervals.
+\end{itemize}
+\[
+\text{Data}\rightarrow\text{Bins}\rightarrow
+\text{Frequencies/Densities}\rightarrow\text{Histogram}
+\]
+Uses include detecting center, spread, skewness, modality and unusual values.
+\end{frame}
+
+% ============================================================
+% 10
+% ============================================================
+\begin{frame}{Construction of a Histogram}
+For observations $x_1,\ldots,x_n$:
+\begin{enumerate}
+\item Find the minimum and maximum.
+\item Choose the number of bins or bin width.
+\item Define non-overlapping intervals.
+\item Count observations in each interval.
+\item Plot the counts/densities against the intervals.
+\end{enumerate}
+If bin width is $h$ and a bin contains $f_j$ observations,
+its density can be written as
+\[
+\hat f_j=\frac{f_j}{nh}.
+\]
+This makes histogram area approximately sum to one.
+\end{frame}
+
+% ============================================================
+% 11
+% ============================================================
+\begin{frame}{Histogram: Frequency and Density}
+\begin{itemize}
+\item \textbf{Frequency}: number of observations in a bin.
+\item \textbf{Relative frequency}: $f_j/n$.
+\item \textbf{Density}: relative frequency divided by bin width.
+\end{itemize}
+For equal-width bins:
+\[
+\text{density}=\frac{\text{frequency}}{n\times\text{bin width}}.
+\]
+For unequal-width bins, bar \textbf{area}, rather than height alone,
+must represent probability.
+\important{A density histogram has total area approximately equal to 1.}
+\end{frame}
+
+% ============================================================
+% 12
+% ============================================================
+\begin{frame}{Histogram: Worked Example}
+Consider:
+\[
+12,\;15,\;17,\;18,\;19,\;21,\;22,\;23,\;25,\;28.
+\]
+Take bins of width $5$:
+\[
+[10,15),\ [15,20),\ [20,25),\ [25,30].
+\]
+Corresponding frequencies:
+\[
+\begin{array}{c|c}
+\text{Bin}&\text{Frequency}\\\hline
+10-15&1\\
+15-20&4\\
+20-25&3\\
+25-30&2
+\end{array}
+\]
+The histogram immediately shows that observations concentrate around
+the middle intervals.
+\end{frame}
+
+% ============================================================
+% 13
+% ============================================================
+\begin{frame}{Interpreting Histogram Shape}
+Common patterns:
+\begin{itemize}
+\item \textbf{Symmetric}: left and right sides are approximately balanced.
+\item \textbf{Right-skewed}: long tail toward larger values.
+\item \textbf{Left-skewed}: long tail toward smaller values.
+\item \textbf{Bimodal}: two prominent peaks.
+\item \textbf{Uniform-like}: relatively even frequencies.
+\item \textbf{Heavy-tailed}: unusually large probability in the tails.
+\end{itemize}
+A histogram is exploratory evidence, not proof of a particular distribution.
+\end{frame}
+
+% ============================================================
+% 14 - NEW
+% ============================================================
+\begin{frame}{3. Skewness}
+\textbf{Skewness} measures the degree and direction of asymmetry in a
+probability distribution.
+
+The population coefficient of skewness is commonly defined as
+\[
+\boxed{
+\gamma_1=
+\frac{\E[(X-\mu)^3]}{\sigma^3}
+}
+\]
+
+For a sample, a simple moment-based estimate is
+\[
+\boxed{
+g_1=
+\frac{
+\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3
+}{
+\left[
+\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2
+\right]^{3/2}
+}
+}
+\]
+
+\begin{itemize}
+\item $\gamma_1=0$: symmetric distribution.
+\item $\gamma_1>0$: \textbf{right-skewed}; longer right tail.
+\item $\gamma_1<0$: \textbf{left-skewed}; longer left tail.
+\end{itemize}
+
+\important{Skewness is dimensionless and is based on the third central moment.}
+\end{frame}
+
+% ============================================================
+% 15 - NEW
+% ============================================================
+\begin{frame}{Skewness: Interpretation and Examples}
+\begin{center}
+\begin{tabular}{p{.28\linewidth}p{.28\linewidth}p{.32\linewidth}}
+\toprule
+\textbf{Type} & \textbf{Skewness} & \textbf{Typical Shape}\\
+\midrule
+Symmetric & $\approx 0$ & Balanced tails\\
+Right-skewed & $>0$ & Long tail to the right\\
+Left-skewed & $<0$ & Long tail to the left\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{.3cm}
+
+For a moderately right-skewed distribution, the typical relationship is
+\[
+\boxed{\text{Mean}>\text{Median}>\text{Mode}}
+\]
+
+For a moderately left-skewed distribution:
+\[
+\boxed{\text{Mean}<\text{Median}<\text{Mode}}
+\]
+
+Examples:
+\begin{itemize}
+\item Income distributions are often right-skewed.
+\item Exam scores may be left-skewed when most students score highly.
+\item Skewness helps determine whether mean-based summaries adequately
+represent a dataset.
+\end{itemize}
+
+\important{The mean--median--mode relationship is a useful rule of thumb,
+not a universal mathematical rule for every distribution.}
+\end{frame}
+
+% ============================================================
+% 16 - NEW
+% ============================================================
+\begin{frame}{4. Kurtosis}
+\textbf{Kurtosis} describes the heaviness of the tails of a distribution
+relative to a reference distribution.
+
+The population kurtosis is the standardized fourth central moment:
+\[
+\boxed{
+\beta_2=
+\frac{\E[(X-\mu)^4]}{\sigma^4}
+}
+\]
+
+The commonly reported \textbf{excess kurtosis} is
+\[
+\boxed{
+\gamma_2=\beta_2-3
+}
+\]
+
+For a normal distribution:
+\[
+\beta_2=3,\qquad \gamma_2=0.
+\]
+
+\begin{itemize}
+\item \textbf{Mesokurtic}: excess kurtosis $\approx0$.
+\item \textbf{Leptokurtic}: positive excess kurtosis; heavier tails.
+\item \textbf{Platykurtic}: negative excess kurtosis; lighter tails.
+\end{itemize}
+
+\important{Kurtosis is especially useful for identifying distributions
+with unusually heavy or light tails and potential extreme observations.}
+\end{frame}
+
+% ============================================================
+% 17 - NEW
+% ============================================================
+\begin{frame}{Kurtosis: Interpretation and Comparison}
+\begin{center}
+\begin{tabular}{p{.28\linewidth}p{.25\linewidth}p{.35\linewidth}}
+\toprule
+\textbf{Distribution} & \textbf{Excess Kurtosis} & \textbf{Interpretation}\\
+\midrule
+Mesokurtic & $\approx0$ & Similar tail weight to normal\\
+Leptokurtic & $>0$ & Heavier tails; more extreme values\\
+Platykurtic & $<0$ & Lighter tails; fewer extreme values\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{.3cm}
+
+Kurtosis is based on the fourth central moment:
+\[
+\gamma_2=
+\frac{\E[(X-\mu)^4]}{\sigma^4}-3.
+\]
+
+\begin{itemize}
+\item The fourth power gives greater weight to observations far from the mean.
+\item Therefore, extreme observations can strongly affect kurtosis.
+\item Kurtosis does \textbf{not} simply measure the height or sharpness of
+the central peak.
+\end{itemize}
+
+\important{In practical data analysis, skewness and kurtosis together provide
+useful information about asymmetry and tail behavior.}
+\end{frame}
+
+% ============================================================
+% 18
+% ============================================================
+\begin{frame}{Histogram: Bin Width, Advantages and Limitations}
+\begin{itemize}
+\item Small bins reveal detail but can create a noisy appearance.
+\item Large bins smooth the distribution but can hide structure.
+\item Common choices include Sturges' rule, Scott's rule and
+Freedman--Diaconis rule.
+\item Advantages: simple, intuitive and useful for EDA.
+\item Limitations: appearance depends strongly on bin choice;
+not ideal for very small samples or precise density estimation.
+\end{itemize}
+\[
+h_{\mathrm{FD}}=2\frac{\operatorname{IQR}(X)}{n^{1/3}}.
+\]
+\end{frame}
+
+% ============================================================
+% 19
+% ============================================================
+\begin{frame}{5. Sample Mean}
+For a sample $x_1,\ldots,x_n$:
+\[
+\boxed{\bar X=\frac{1}{n}\sum_{i=1}^{n}X_i}
+\]
+Properties under random sampling:
+\[
+\E[\bar X]=\mu,\qquad
+\Var(\bar X)=\frac{\sigma^2}{n}.
+\]
+The mean uses every observation and is sensitive to extreme values.
+It is a fundamental estimator of the population mean.
+\end{frame}
+
+% ============================================================
+% 20
+% ============================================================
+\begin{frame}{Sample Mean as an Optimization Solution}
+The sample mean minimizes the sum of squared deviations:
+\[
+\hat a=\arg\min_a\sum_{i=1}^{n}(x_i-a)^2.
+\]
+Differentiate:
+\[
+\frac{d}{da}\sum_i(x_i-a)^2
+=-2\sum_i(x_i-a).
+\]
+Setting this equal to zero:
+\[
+\sum_i x_i-na=0
+\quad\Rightarrow\quad
+\boxed{a=\bar x}.
+\]
+Thus the mean is the least-squares center of the observations.
+\end{frame}
+
+% ============================================================
+% 21
+% ============================================================
+\begin{frame}{Properties of the Sample Mean}
+\begin{itemize}
+\item \textbf{Linearity}: $\overline{aX+b}=a\bar X+b$.
+\item \textbf{Unbiasedness}: $\E[\bar X]=\mu$.
+\item \textbf{Consistency}: $\bar X\to\mu$ as $n\to\infty$ under standard
+conditions.
+\item \textbf{Low variance}: variance decreases as sample size increases.
+\item \textbf{Sensitivity}: a single extreme observation can substantially
+change $\bar X$.
+\end{itemize}
+For independent observations:
+\[
+SE(\bar X)=\frac{\sigma}{\sqrt n}.
+\]
+\end{frame}
+
+% ============================================================
+% 22
+% ============================================================
+\begin{frame}{Variance of the Sample Mean and Standard Error}
+For independent, identically distributed observations:
+\[
+\Var(\bar X)=
+\Var\left(\frac1n\sum_iX_i\right)
+=\frac{\sigma^2}{n}.
+\]
+Therefore,
+\[
+\boxed{SE(\bar X)=\frac{\sigma}{\sqrt n}}.
+\]
+If $\sigma$ is unknown, estimate it using $S$:
+\[
+\widehat{SE}(\bar X)=\frac{S}{\sqrt n}.
+\]
+Doubling $n$ does not halve the standard error; it reduces it by
+a factor of $\sqrt2$.
+\end{frame}
+
+% ============================================================
+% 23
+% ============================================================
+\begin{frame}{Effect of Sample Size on Standard Error}
+\begin{center}
+\begin{tabular}{c|c}
+$n$ & $SE(\bar X)/\sigma$\\\hline
+25 & $0.20$\\
+100 & $0.10$\\
+400 & $0.05$\\
+900 & $0.0333$
+\end{tabular}
+\end{center}
+\[
+SE\propto n^{-1/2}.
+\]
+\begin{itemize}
+\item Larger samples give more stable estimates.
+\item Precision improves with diminishing returns.
+\item To reduce standard error by half, approximately four times as many
+observations are required.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 24
+% ============================================================
+\begin{frame}{Sample Variance and Standard Deviation}
+The unbiased sample variance is
+\[
+\boxed{S^2=\frac{1}{n-1}\sum_{i=1}^{n}(X_i-\bar X)^2}.
+\]
+Sample standard deviation:
+\[
+\boxed{S=\sqrt{S^2}}.
+\]
+Interpretation:
+\begin{itemize}
+\item Variance measures average squared deviation from the sample mean.
+\item Standard deviation is in the same units as the original variable.
+\item Both measure dispersion around the center.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 25
+% ============================================================
+\begin{frame}{Why Does Sample Variance Use $n-1$?}
+The deviations from the sample mean satisfy
+\[
+\sum_{i=1}^{n}(X_i-\bar X)=0.
+\]
+Once $n-1$ deviations are known, the final deviation is determined.
+Hence there are only $n-1$ degrees of freedom.
+\[
+\frac{1}{n}\sum_i(X_i-\bar X)^2
+\]
+tends to underestimate $\sigma^2$.
+Using Bessel's correction:
+\[
+\boxed{\E[S^2]=\sigma^2}.
+\]
+Thus $S^2$ is unbiased for population variance.
+\end{frame}
+
+% ============================================================
+% 26
+% ============================================================
+\begin{frame}{Sample Variance: Numerical Example}
+Take:
+\[
+2,\;4,\;6,\;8.
+\]
+Then
+\[
+\bar x=5.
+\]
+Squared deviations:
+\[
+9,\;1,\;1,\;9.
+\]
+Hence
+\[
+\sum(x_i-\bar x)^2=20
+\]
+and
+\[
+S^2=\frac{20}{4-1}=\frac{20}{3}\approx6.67.
+\]
+Therefore
+\[
+S\approx2.58.
+\]
+This illustrates the distinction between dividing by $n$ and $n-1$.
+\end{frame}
+
+% ============================================================
+% 27
+% ============================================================
+\begin{frame}{6. Order Statistics}
+Given a sample $X_1,\ldots,X_n$, sort it:
+\[
+X_{(1)}\le X_{(2)}\le\cdots\le X_{(n)}.
+\]
+These are called \textbf{order statistics}.
+\begin{itemize}
+\item $X_{(1)}$: minimum
+\item $X_{(n)}$: maximum
+\item Middle order statistics: basis for medians and quantiles
+\end{itemize}
+Order statistics depend on the ranks of observations rather than their
+original order.
+\end{frame}
+
+% ============================================================
+% 28
+% ============================================================
+\begin{frame}{Distribution of an Order Statistic}
+If $X_1,\ldots,X_n$ are i.i.d. with CDF $F(x)$, then for the minimum:
+\[
+P(X_{(1)}>x)=[1-F(x)]^n.
+\]
+Therefore:
+\[
+F_{X_{(1)}}(x)=1-[1-F(x)]^n.
+\]
+For the maximum:
+\[
+F_{X_{(n)}}(x)=F(x)^n.
+\]
+For a general order statistic $X_{(k)}$, the CDF is
+\[
+P(X_{(k)}\le x)=
+\sum_{j=k}^{n}\binom njF(x)^j[1-F(x)]^{n-j}.
+\]
+\end{frame}
+
+% ============================================================
+% 29
+% ============================================================
+\begin{frame}{Median, Quantiles and Interquartile Range}
+\begin{itemize}
+\item The \textbf{median} is the 50th percentile.
+\item $Q_1$: 25th percentile.
+\item $Q_3$: 75th percentile.
+\item Interquartile range:
+\end{itemize}
+\[
+\boxed{IQR=Q_3-Q_1}.
+\]
+The IQR measures the spread of the central 50\% of observations and is
+more robust to extreme values than variance.
+\end{frame}
+
+% ============================================================
+% 30
+% ============================================================
+\begin{frame}{Outlier Detection Using IQR}
+The standard Tukey rule identifies potential outliers using:
+\[
+\text{Lower fence}=Q_1-1.5(IQR)
+\]
+\[
+\text{Upper fence}=Q_3+1.5(IQR).
+\]
+Observations outside these limits are flagged as potential outliers.
+\begin{itemize}
+\item An outlier is not automatically an error.
+\item It may represent a genuine rare event.
+\item Domain knowledge is required before removing observations.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 31
+% ============================================================
+\begin{frame}{7. Sample Covariance}
+For paired observations $(X_i,Y_i)$:
+\[
+\boxed{
+S_{XY}=
+\frac{1}{n-1}
+\sum_{i=1}^{n}(X_i-\bar X)(Y_i-\bar Y)
+}.
+\]
+Interpretation:
+\begin{itemize}
+\item $S_{XY}>0$: variables tend to increase together.
+\item $S_{XY}<0$: one tends to increase as the other decreases.
+\item $S_{XY}\approx0$: little linear co-movement.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 32
+% ============================================================
+\begin{frame}{Covariance: Interpretation and Independence}
+Covariance depends on the measurement scales:
+\[
+\operatorname{Cov}(aX,bY)=ab\,\operatorname{Cov}(X,Y).
+\]
+If $X$ and $Y$ are independent and have finite expectations:
+\[
+\boxed{\operatorname{Cov}(X,Y)=0}.
+\]
+However,
+\[
+\operatorname{Cov}(X,Y)=0
+\not\Rightarrow X\text{ and }Y\text{ are independent}
+\]
+in general.
+For jointly Gaussian variables, zero covariance does imply independence.
+\end{frame}
+
+% ============================================================
+% 33
+% ============================================================
+\begin{frame}{Covariance: Numerical Example}
+Consider:
+\[
+X=(1,2,3),\qquad Y=(2,4,6).
+\]
+Then
+\[
+\bar X=2,\qquad \bar Y=4.
+\]
+Products of centered values:
+\[
+(-1)(-2),\quad(0)(0),\quad(1)(2)=2,0,2.
+\]
+Thus
+\[
+S_{XY}=\frac{4}{3-1}=2.
+\]
+The positive value reflects perfect positive linear association in this example.
+\end{frame}
+
+% ============================================================
+% 34
+% ============================================================
+\begin{frame}{Covariance and Correlation}
+Pearson sample correlation:
+\[
+\boxed{
+r=\frac{S_{XY}}{S_XS_Y}
+}.
+\]
+Properties:
+\[
+-1\le r\le1.
+\]
+\begin{itemize}
+\item $r=1$: perfect positive linear relation.
+\item $r=-1$: perfect negative linear relation.
+\item $r\approx0$: weak linear association.
+\end{itemize}
+Correlation is dimensionless; covariance is not.
+\important{Correlation measures linear association, not causation.}
+\end{frame}
+
+% ============================================================
+% 35
+% ============================================================
+\begin{frame}{Sample Covariance Matrix}
+For a $p$-dimensional observation vector
+\[
+\mathbf X_i=(X_{i1},\ldots,X_{ip})^T,
+\]
+the sample covariance matrix is
+\[
+\boxed{
+S=\frac1{n-1}\sum_{i=1}^{n}
+(\mathbf X_i-\bar{\mathbf X})
+(\mathbf X_i-\bar{\mathbf X})^T
+}.
+\]
+It has the form
+\[
+S=
+\begin{bmatrix}
+S_{11}&S_{12}&\cdots\\
+S_{21}&S_{22}&\cdots\\
+\vdots&\vdots&\ddots
+\end{bmatrix}.
+\]
+Diagonal entries are variances; off-diagonal entries are covariances.
+\end{frame}
+
+% ============================================================
+% 36
+% ============================================================
+\begin{frame}{Properties of the Covariance Matrix}
+A covariance matrix:
+\begin{itemize}
+\item is square and symmetric: $S=S^T$;
+\item has non-negative diagonal elements;
+\item is positive semidefinite:
+\[
+\mathbf a^TS\mathbf a\ge0;
+\]
+\item describes scale and dependence among variables;
+\item is central to PCA, Gaussian models and multivariate analysis.
+\end{itemize}
+If variables are standardized, the covariance matrix becomes the
+correlation matrix.
+\end{frame}
+
+% ============================================================
+% 37
+% ============================================================
+\begin{frame}{Covariance Matrix: Example}
+For two variables:
+\[
+S=
+\begin{bmatrix}
+4&2\\
+2&9
+\end{bmatrix}.
+\]
+Interpretation:
+\[
+\Var(X_1)=4,\qquad
+\Var(X_2)=9,\qquad
+\Cov(X_1,X_2)=2.
+\]
+The corresponding correlation is
+\[
+r=\frac{2}{\sqrt{4}\sqrt{9}}=\frac13.
+\]
+Thus the variables have positive but moderate linear association.
+\end{frame}
+
+% ============================================================
+% 38
+% ============================================================
+\begin{frame}{8. Covariance Matrix and PCA}
+Principal Component Analysis (PCA) finds directions of maximum variance.
+For covariance matrix $S$:
+\[
+S\mathbf v_j=\lambda_j\mathbf v_j.
+\]
+Here $\lambda_j$ is the variance along eigenvector $\mathbf v_j$.
+Order:
+\[
+\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_p\ge0.
+\]
+The first principal component is the direction associated with the largest
+eigenvalue.
+\end{frame}
+
+% ============================================================
+% 39
+% ============================================================
+\begin{frame}{Variance Explained in PCA}
+The proportion of variance explained by component $j$ is
+\[
+\boxed{
+\frac{\lambda_j}{\sum_{k=1}^{p}\lambda_k}
+}.
+\]
+Cumulative explained variance:
+\[
+\boxed{
+\frac{\sum_{j=1}^{m}\lambda_j}
+{\sum_{k=1}^{p}\lambda_k}
+}.
+\]
+PCA can therefore select the smallest $m$ retaining a desired percentage
+of total variance, such as 90\% or 95\%.
+\end{frame}
+
+% ============================================================
+% 40
+% ============================================================
+\begin{frame}{Multivariate Gaussian Model}
+A multivariate normal distribution is written
+\[
+\mathbf X\sim\mathcal N_p(\boldsymbol\mu,\Sigma).
+\]
+Its density is
+\[
+f(\mathbf x)=
+\frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}}
+\exp\left[
+-\frac12(\mathbf x-\boldsymbol\mu)^T
+\Sigma^{-1}(\mathbf x-\boldsymbol\mu)
+\right].
+\]
+\begin{itemize}
+\item $\boldsymbol\mu$: mean vector
+\item $\Sigma$: covariance matrix
+\item $\Sigma$ controls spread and orientation of the distribution.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 41
+% ============================================================
+\begin{frame}{9. Frequentist Statistics and Random Sampling}
+Frequentist inference is based on repeated sampling from a population/model.
+\begin{itemize}
+\item The parameter is fixed but unknown.
+\item The sample is random.
+\item Consequently, an estimator is a random variable.
+\item Its probability distribution is the \textbf{sampling distribution}.
+\end{itemize}
+A good sampling design attempts to make the sample representative of
+the target population.
+\end{frame}
+
+% ============================================================
+% 42
+% ============================================================
+\begin{frame}{Sampling Methods}
+Major probability sampling methods:
+\begin{itemize}
+\item \textbf{Simple random sampling}: every unit has equal selection probability.
+\item \textbf{Systematic sampling}: select every $k$th unit after a random start.
+\item \textbf{Stratified sampling}: divide into strata and sample within each.
+\item \textbf{Cluster sampling}: sample naturally occurring groups.
+\end{itemize}
+Non-probability methods include convenience and voluntary-response sampling,
+which can create substantial bias.
+\end{frame}
+
+% ============================================================
+% 43
+% ============================================================
+\begin{frame}{Sampling Bias}
+Sampling bias occurs when the sampling mechanism systematically
+over- or under-represents parts of the target population.
+Examples:
+\begin{itemize}
+\item coverage bias;
+\item non-response bias;
+\item voluntary-response bias;
+\item convenience sampling;
+\item survivorship bias.
+\end{itemize}
+\important{Increasing sample size does not automatically remove systematic bias.}
+A very large biased sample can still give a biased estimate.
+\end{frame}
+
+% ============================================================
+% 44
+% ============================================================
+\begin{frame}{Sampling Distribution of the Sample Mean}
+Suppose
+\[
+X_1,\ldots,X_n\overset{iid}{\sim}(\mu,\sigma^2).
+\]
+Then
+\[
+\E[\bar X]=\mu,\qquad
+\Var(\bar X)=\frac{\sigma^2}{n}.
+\]
+If the population is normal:
+\[
+\boxed{\bar X\sim\mathcal N\left(\mu,\frac{\sigma^2}{n}\right)}.
+\]
+Even when the original population is not normal, the distribution of $\bar X$
+often becomes approximately normal for sufficiently large $n$.
+\end{frame}
+
+% ============================================================
+% 45
+% ============================================================
+\begin{frame}{Central Limit Theorem}
+Under standard regularity conditions:
+\[
+\boxed{
+\frac{\bar X-\mu}{\sigma/\sqrt n}
+\overset{d}{\longrightarrow}\mathcal N(0,1)
+}
+\qquad(n\to\infty).
+\]
+Meaning:
+\begin{itemize}
+\item independent observations with finite mean and variance are typical assumptions;
+\item the standardized sample mean approaches a standard normal distribution;
+\item exact normality of the population is not required.
+\end{itemize}
+The CLT is one of the foundations of large-sample inference.
+\end{frame}
+
+% ============================================================
+% 46
+% ============================================================
+\begin{frame}{Importance of the Central Limit Theorem}
+The CLT enables:
+\begin{itemize}
+\item approximate confidence intervals;
+\item hypothesis tests;
+\item normal-based error approximations;
+\item statistical quality control;
+\item scalable inference for many real-world datasets.
+\end{itemize}
+\[
+\text{Population distribution}
+\quad\longrightarrow\quad
+\text{Sampling distribution of }\bar X
+\quad\approx\quad
+\text{Normal for large }n.
+\]
+The CLT concerns sampling distributions, not the claim that the raw data
+themselves become normal.
+\end{frame}
+
+% ============================================================
+% 47
+% ============================================================
+\begin{frame}{10. Mean Square Error}
+For estimator $\hat\theta$ of parameter $\theta$:
+\[
+\boxed{
+MSE(\hat\theta)=\E[(\hat\theta-\theta)^2]
+}.
+\]
+MSE combines two ideas:
+\[
+\text{accuracy}=\text{bias}+\text{variability}.
+\]
+It is widely used for comparing estimators and evaluating regression models.
+Smaller MSE generally indicates better expected squared accuracy for the
+same target parameter.
+\end{frame}
+
+% ============================================================
+% 48
+% ============================================================
+\begin{frame}{Bias of an Estimator}
+Bias is
+\[
+\boxed{
+\Bias(\hat\theta)=\E[\hat\theta]-\theta
+}.
+\]
+An estimator is unbiased if
+\[
+\E[\hat\theta]=\theta.
+\]
+Important:
+\begin{itemize}
+\item Bias is a systematic tendency away from the target.
+\item An unbiased estimator can still have high variance.
+\item A biased estimator can sometimes have lower MSE.
+\end{itemize}
+Therefore, unbiasedness alone is not a complete criterion for estimator quality.
+\end{frame}
+
+% ============================================================
+% 49
+% ============================================================
+\begin{frame}{Bias--Variance Decomposition}
+For squared error:
+\[
+\boxed{
+MSE(\hat\theta)=
+\Var(\hat\theta)+\Bias(\hat\theta)^2
+}.
+\]
+For a prediction model, expected test error can similarly be decomposed
+conceptually into:
+\[
+\text{irreducible noise}
++\text{bias}^2
++\text{variance}.
+\]
+\begin{itemize}
+\item High bias $\rightarrow$ underfitting tendency.
+\item High variance $\rightarrow$ overfitting tendency.
+\item Model complexity often trades one against the other.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 50
+% ============================================================
+\begin{frame}{MSE in Machine Learning: Numerical Example}
+Suppose an estimator has
+\[
+\Bias(\hat\theta)=2,\qquad
+\Var(\hat\theta)=9.
+\]
+Then
+\[
+MSE=9+2^2=13.
+\]
+If another estimator has
+\[
+\Bias=1,\qquad\Var=5,
+\]
+then
+\[
+MSE=5+1=6.
+\]
+The second estimator is preferable under squared-error loss even though
+bias is not zero.
+\end{frame}
+
+% ============================================================
+% 51
+% ============================================================
+\begin{frame}{11. Consistency of Estimators}
+An estimator $\hat\theta_n$ is \textbf{consistent} for $\theta$ if
+\[
+\boxed{
+\hat\theta_n\xrightarrow{p}\theta
+}
+\qquad(n\to\infty).
+\]
+That is, for every $\epsilon>0$,
+\[
+P(|\hat\theta_n-\theta|>\epsilon)\to0.
+\]
+Consistency describes asymptotic behavior as sample size grows.
+It is different from finite-sample unbiasedness.
+\end{frame}
+
+% ============================================================
+% 52
+% ============================================================
+\begin{frame}{Consistency of the Sample Mean}
+For i.i.d. observations with finite variance:
+\[
+\E[\bar X]=\mu,\qquad
+\Var(\bar X)=\frac{\sigma^2}{n}\to0.
+\]
+By Chebyshev's inequality:
+\[
+P(|\bar X-\mu|\ge\epsilon)
+\le
+\frac{\sigma^2}{n\epsilon^2}\to0.
+\]
+Therefore:
+\[
+\boxed{\bar X\xrightarrow{p}\mu}.
+\]
+This is the weak law of large numbers in action.
+\end{frame}
+
+% ============================================================
+% 53
+% ============================================================
+\begin{frame}{Unbiasedness versus Consistency}
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+& \textbf{Unbiasedness} & \textbf{Consistency}\\
+\midrule
+Nature & Finite-sample property & Asymptotic property\\
+Condition & $\E[\hat\theta]=\theta$ & $\hat\theta_n\to_p\theta$\\
+Focus & Average target correctness & Large-$n$ convergence\\
+Can coexist? & \multicolumn{2}{l}{Yes}\\
+\bottomrule
+\end{tabular}
+\end{center}
+\important{An estimator can be biased but consistent. An estimator can be
+unbiased without having especially small finite-sample variance.}
+\end{frame}
+
+% ============================================================
+% 54
+% ============================================================
+\begin{frame}{12. Confidence Intervals}
+A confidence interval is a random interval constructed from data:
+\[
+[L(X),U(X)].
+\]
+For a 95\% confidence procedure:
+\[
+P_\theta\{L(X)\le\theta\le U(X)\}=0.95
+\]
+under the assumed model and repeated sampling.
+The parameter $\theta$ is fixed; the interval endpoints vary from sample
+to sample.
+\end{frame}
+
+% ============================================================
+% 55
+% ============================================================
+\begin{frame}{Confidence Interval with Known $\sigma$}
+If the population standard deviation is known:
+\[
+\boxed{
+\bar X\pm z_{\alpha/2}\frac{\sigma}{\sqrt n}
+}.
+\]
+For 95\% confidence:
+\[
+z_{0.025}\approx1.96.
+\]
+Hence:
+\[
+\bar X\pm1.96\frac{\sigma}{\sqrt n}.
+\]
+The margin of error is
+\[
+E=z_{\alpha/2}\frac{\sigma}{\sqrt n}.
+\]
+\end{frame}
+
+% ============================================================
+% 56
+% ============================================================
+\begin{frame}{Confidence Interval with Unknown $\sigma$}
+When $\sigma$ is unknown, use $S$:
+\[
+\boxed{
+\bar X\pm t_{\alpha/2,n-1}\frac{S}{\sqrt n}
+}.
+\]
+The $t$ distribution has heavier tails than the standard normal for
+finite degrees of freedom.
+As $n$ increases:
+\[
+t_{\alpha/2,n-1}\rightarrow z_{\alpha/2}.
+\]
+This is the standard one-sample $t$ interval for a population mean.
+\end{frame}
+
+% ============================================================
+% 57
+% ============================================================
+\begin{frame}{Confidence Interval: Worked Example}
+Suppose
+\[
+n=25,\quad \bar x=72,\quad S=10.
+\]
+For a 95\% interval:
+\[
+t_{0.025,24}\approx2.064.
+\]
+Thus
+\[
+72\pm2.064\left(\frac{10}{5}\right)
+=72\pm4.128.
+\]
+Therefore:
+\[
+\boxed{(67.872,\;76.128)}.
+\]
+The interval is a plausible range generated by the specified frequentist
+procedure for the population mean.
+\end{frame}
+
+% ============================================================
+% 58
+% ============================================================
+\begin{frame}{Correct Frequentist Interpretation}
+A 95\% confidence procedure means:
+\[
+P(L(X)\le\theta\le U(X))=0.95
+\]
+before observing the sample, under repeated sampling.
+Correct wording:
+\begin{quote}
+``If this procedure were repeated many times under the model,
+about 95\% of the resulting intervals would contain $\theta$.''
+\end{quote}
+Avoid saying that there is a 95\% probability that the fixed parameter
+lies inside this already-observed interval.
+\end{frame}
+
+% ============================================================
+% 59
+% ============================================================
+\begin{frame}{Confidence Interval Width and Population Proportion}
+For a mean:
+\[
+\text{Width}\propto
+\frac{\text{critical value}\times\text{standard deviation}}{\sqrt n}.
+\]
+Width increases with variability and confidence level, and decreases with $n$.
+For a population proportion:
+\[
+\hat p=\frac{x}{n},
+\qquad
+SE(\hat p)\approx\sqrt{\frac{\hat p(1-\hat p)}{n}}.
+\]
+A large-sample Wald interval is
+\[
+\hat p\pm z_{\alpha/2}
+\sqrt{\frac{\hat p(1-\hat p)}{n}}.
+\]
+Other intervals, such as Wilson intervals, can have better finite-sample behavior.
+\end{frame}
+
+% ============================================================
+% 60
+% ============================================================
+\begin{frame}{13. Parametric Model Estimation}
+A parametric model assumes a finite-dimensional parameter:
+\[
+X\sim f(x;\theta),\qquad \theta\in\Theta\subseteq\mathbb R^k.
+\]
+Examples:
+\begin{itemize}
+\item Normal: $\theta=(\mu,\sigma^2)$
+\item Bernoulli: $\theta=p$
+\item Poisson: $\theta=\lambda$
+\end{itemize}
+Estimation uses sample data to infer $\theta$.
+Parametric models can be statistically efficient when their assumptions are
+reasonable.
+\end{frame}
+
+% ============================================================
+% 61
+% ============================================================
+\begin{frame}{Method of Moments}
+The method of moments equates sample moments to theoretical moments.
+For example:
+\[
+\E[X]=\mu
+\quad\Rightarrow\quad
+\bar X=\mu.
+\]
+For a distribution with parameters $\theta_1,\ldots,\theta_k$:
+\[
+m_j'=\frac1n\sum_{i=1}^{n}X_i^j
+\]
+is matched with
+\[
+\E[X^j].
+\]
+Solving the resulting equations produces method-of-moments estimators.
+\end{frame}
+
+% ============================================================
+% 62
+% ============================================================
+\begin{frame}{Maximum Likelihood Estimation}
+For observations $x_1,\ldots,x_n$ with density/PMF $f(x;\theta)$:
+\[
+L(\theta)=\prod_{i=1}^{n}f(x_i;\theta).
+\]
+The maximum likelihood estimator is
+\[
+\boxed{
+\hat\theta_{MLE}=\argmax_{\theta\in\Theta}L(\theta)
+}.
+\]
+Since products can be inconvenient, maximize the log-likelihood:
+\[
+\ell(\theta)=\log L(\theta)
+=\sum_{i=1}^{n}\log f(x_i;\theta).
+\]
+The logarithm is monotone, so it does not change the maximizing parameter.
+\end{frame}
+
+% ============================================================
+% 63
+% ============================================================
+\begin{frame}{MLE of Normal Mean and Variance}
+If
+\[
+X_i\sim\mathcal N(\mu,\sigma^2),
+\]
+the log-likelihood is
+\[
+\ell(\mu,\sigma^2)=
+-\frac n2\log(2\pi\sigma^2)
+-\frac{1}{2\sigma^2}\sum_i(X_i-\mu)^2.
+\]
+Differentiation gives:
+\[
+\boxed{\hat\mu_{MLE}=\bar X}
+\]
+and
+\[
+\boxed{
+\hat\sigma^2_{MLE}
+=\frac1n\sum_i(X_i-\bar X)^2
+}.
+\]
+Notice the variance denominator is $n$, not $n-1$.
+\end{frame}
+
+% ============================================================
+% 64
+% ============================================================
+\begin{frame}{MLE versus Unbiased Sample Variance}
+Two estimators:
+\[
+\hat\sigma^2_{MLE}
+=\frac1n\sum_i(X_i-\bar X)^2
+\]
+and
+\[
+S^2
+=\frac1{n-1}\sum_i(X_i-\bar X)^2.
+\]
+For normal data:
+\[
+\E[\hat\sigma^2_{MLE}]
+=\frac{n-1}{n}\sigma^2.
+\]
+Thus the MLE is biased downward in finite samples.
+But it is the likelihood maximizer, whereas $S^2$ is unbiased.
+This illustrates that different estimator criteria can lead to different choices.
+\end{frame}
+
+% ============================================================
+% 65
+% ============================================================
+\begin{frame}{14. Non-Parametric Model Estimation}
+Non-parametric methods impose fewer assumptions about the functional form
+of the population distribution.
+Examples:
+\begin{itemize}
+\item Empirical Distribution Function (ECDF)
+\item Kernel Density Estimation (KDE)
+\item Rank-based methods
+\item Quantile-based summaries
+\end{itemize}
+Advantages:
+\begin{itemize}
+\item flexible;
+\item useful when distributional assumptions are uncertain.
+\end{itemize}
+Trade-off: greater flexibility can require more data and careful tuning.
+\end{frame}
+
+% ============================================================
+% 66
+% ============================================================
+\begin{frame}{Empirical Distribution Function}
+For observations $X_1,\ldots,X_n$:
+\[
+\boxed{
+\hat F_n(x)=\frac1n\sum_{i=1}^{n}I(X_i\le x)
+}.
+\]
+Properties:
+\begin{itemize}
+\item non-decreasing;
+\item right-continuous;
+\item ranges from 0 to 1;
+\item jumps by $1/n$ at each observation, accounting for ties.
+\end{itemize}
+The ECDF estimates the population CDF directly without specifying
+a parametric family.
+\end{frame}
+
+% ============================================================
+% 67
+% ============================================================
+\begin{frame}{Kernel Density Estimation}
+KDE estimates an unknown density using:
+\[
+\boxed{
+\hat f_h(x)=
+\frac{1}{nh}\sum_{i=1}^{n}
+K\left(\frac{x-X_i}{h}\right)
+}.
+\]
+Here:
+\begin{itemize}
+\item $K$: kernel function;
+\item $h>0$: bandwidth;
+\item $n$: sample size.
+\end{itemize}
+Common kernels include Gaussian, Epanechnikov, uniform and triangular kernels.
+The bandwidth generally has a larger influence on the result than the exact
+kernel choice.
+\end{frame}
+
+% ============================================================
+% 68
+% ============================================================
+\begin{frame}{KDE: Normalization, Bandwidth and Bias--Variance Trade-off}
+If
+\[
+\int K(u)\,du=1,
+\]
+then
+\[
+\int\hat f_h(x)\,dx=1.
+\]
+Bandwidth:
+\begin{itemize}
+\item small $h$: detailed, wiggly estimate, potentially high variance;
+\item large $h$: smooth estimate, potentially high bias.
+\end{itemize}
+Thus KDE exhibits a bias--variance trade-off.
+Bandwidth can be selected using rules of thumb, cross-validation or
+other data-driven criteria.
+\end{frame}
+
+% ============================================================
+% 69
+% ============================================================
+\begin{frame}{15. Parametric versus Non-Parametric Estimation}
+\begin{center}
+\begin{tabular}{p{.25\linewidth}p{.31\linewidth}p{.31\linewidth}}
+\toprule
+& \textbf{Parametric} & \textbf{Non-parametric}\\
+\midrule
+Assumptions & Specific distributional form & Fewer shape assumptions\\
+Flexibility & Lower & Higher\\
+Data requirement & Often lower & Often higher\\
+Interpretability & Often high & Depends on method\\
+Examples & Normal MLE, Poisson & ECDF, KDE\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+% ============================================================
+% 70
+% ============================================================
+\begin{frame}{16. Integrated Statistical Analysis Workflow}
+A practical workflow:
+\[
+\boxed{
+\text{Collect}
+\rightarrow
+\text{Clean}
+\rightarrow
+\text{Explore}
+\rightarrow
+\text{Summarize}
+\rightarrow
+\text{Model}
+\rightarrow
+\text{Infer}
+\rightarrow
+\text{Validate}
+}
+\]
+\begin{itemize}
+\item Histograms reveal distributional shape.
+\item Mean/median describe central tendency.
+\item Variance/IQR describe dispersion.
+\item Skewness describes asymmetry.
+\item Kurtosis describes tail behavior.
+\item Covariance/correlation describe relationships.
+\item Confidence intervals quantify sampling uncertainty.
+\item Estimation methods connect data to population/model parameters.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 71
+% ============================================================
+\begin{frame}{17. Applications in Data Science and AI}
+\begin{itemize}
+\item \textbf{Exploratory Data Analysis}: distributions, skewness, kurtosis,
+outliers and feature relationships.
+\item \textbf{PCA}: covariance matrix and eigenvalue-based dimensionality reduction.
+\item \textbf{Regression}: least squares, residual variance and prediction error.
+\item \textbf{Anomaly detection}: unusual values relative to estimated distributions.
+\item \textbf{Classification}: probabilistic models and uncertainty.
+\item \textbf{A/B testing}: sampling distributions, confidence intervals and inference.
+\item \textbf{Scientific/engineering systems}: measurement uncertainty,
+quality control and reliability analysis.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+% 72
+% ============================================================
+\begin{frame}{18. Key Comparisons and Formula Sheet}
+\small
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Concept} & \textbf{Key expression}\\
+\midrule
+Sample mean & $\displaystyle \bar X=\frac1n\sum X_i$\\
+Sample variance & $\displaystyle S^2=\frac1{n-1}\sum(X_i-\bar X)^2$\\
+Standard error & $\displaystyle SE(\bar X)=\frac{\sigma}{\sqrt n}$\\
+Skewness & $\displaystyle \gamma_1=\frac{\E[(X-\mu)^3]}{\sigma^3}$\\
+Kurtosis & $\displaystyle \beta_2=\frac{\E[(X-\mu)^4]}{\sigma^4}$\\
+Excess kurtosis & $\displaystyle \gamma_2=\beta_2-3$\\
+Covariance & $\displaystyle S_{XY}=\frac1{n-1}\sum(X_i-\bar X)(Y_i-\bar Y)$\\
+Correlation & $\displaystyle r=S_{XY}/(S_XS_Y)$\\
+MSE & $\displaystyle \Var(\hat\theta)+\Bias(\hat\theta)^2$\\
+Consistency & $\displaystyle \hat\theta_n\xrightarrow{p}\theta$\\
+Known-$\sigma$ CI & $\displaystyle \bar X\pm z_{\alpha/2}\sigma/\sqrt n$\\
+Unknown-$\sigma$ CI & $\displaystyle \bar X\pm t_{\alpha/2,n-1}S/\sqrt n$\\
+ECDF & $\displaystyle \hat F_n(x)=n^{-1}\sum I(X_i\le x)$\\
+KDE & $\displaystyle \hat f_h(x)=\frac1{nh}\sum K((x-X_i)/h)$\\
+MLE & $\displaystyle \hat\theta=\argmax_\theta L(\theta)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+% ============================================================
+% REFERENCES
+% ============================================================
+\begin{frame}{References}
+\begin{enumerate}
+\item George Casella and Roger L. Berger, \textit{Statistical Inference},
+Cengage Learning.
+\item Larry Wasserman, \textit{All of Statistics}, Springer.
+\item Trevor Hastie, Robert Tibshirani and Jerome Friedman,
+\textit{The Elements of Statistical Learning}, Springer.
+\item Gareth James et al., \textit{An Introduction to Statistical Learning},
+Springer.
+\item Christopher M. Bishop, \textit{Pattern Recognition and Machine Learning},
+Springer.
+\item Sheldon Ross, \textit{A First Course in Probability}, Pearson.
+\end{enumerate}
+\end{frame}
+
+\end{document}
