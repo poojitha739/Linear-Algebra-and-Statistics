@@ -1,0 +1,1736 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% -------------------------------------------------
+% PACKAGES
+% -------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{tikz}
+
+% -------------------------------------------------
+% THEME
+% -------------------------------------------------
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% Clean navigation
+\setbeamertemplate{navigation symbols}{}
+
+% Frame number
+\setbeamertemplate{footline}{
+    \leavevmode%
+    \hbox{%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1ex,
+      center]{author in head/foot}
+      \insertshorttitle \hspace{1cm}
+      | \hspace{0.2cm}
+      Slide \insertframenumber{} of \inserttotalframenumber
+    \end{beamercolorbox}}
+}
+
+% -------------------------------------------------
+% FONT AND SPACING
+% -------------------------------------------------
+\setlength{\parskip}{3pt}
+
+\setbeamertemplate{itemize item}{\small$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\scriptsize$\bullet$}
+
+% Slightly compact lists
+\setlength{\leftmargini}{1.5em}
+\setlength{\leftmarginii}{1.2em}
+
+% -------------------------------------------------
+% TITLE INFORMATION
+% -------------------------------------------------
+\title[Module 2 -- Linear Algebra]
+{MODULE 2\\[0.2cm]
+\textbf{Vectors, Matrices and Linear Transformations}}
+
+\subtitle{Mathematics for Computing}
+
+\author{
+\textbf{Poojitha Santhosh}\\[0.2cm]
+M.Tech Computer Science and Engineering
+}
+
+\institute{Department of Computer Science and Engineering}
+
+\date{}
+
+% -------------------------------------------------
+% DOCUMENT
+% -------------------------------------------------
+\begin{document}
+
+% -------------------------------------------------
+% TITLE SLIDE
+% -------------------------------------------------
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% -------------------------------------------------
+% CONTENT OVERVIEW
+% -------------------------------------------------
+\begin{frame}[t,shrink=10]{Module 2: Overview}
+
+\begin{block}{Main Theme}
+This module develops the mathematical foundations of
+\textbf{vectors, matrices, vector spaces and linear transformations}.
+\end{block}
+
+\vspace{0.2cm}
+
+\begin{itemize}
+    \item Vectors and coordinate systems
+    \item Linear combinations, span and basis
+    \item Matrix multiplication and transformations
+    \item Determinants, inverses and systems of equations
+    \item Column space and null space
+    \item Dot and cross products
+    \item Change of basis
+    \item Eigenvalues and eigenvectors
+    \item Vector spaces
+\end{itemize}
+
+\end{frame}
+
+% =================================================
+% SECTION 1: VECTORS
+% =================================================
+
+\section{Vectors and Coordinate Systems}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{1. Vectors}
+
+\begin{block}{Definition}
+A \textbf{vector} is a mathematical object that has both
+magnitude and direction.
+\end{block}
+
+\begin{itemize}
+    \item Vectors are commonly represented as ordered lists of numbers.
+    \item A two-dimensional vector belongs to $\mathbb{R}^2$.
+    \item A three-dimensional vector belongs to $\mathbb{R}^3$.
+\end{itemize}
+
+\[
+\mathbf{v}
+=
+\begin{bmatrix}
+v_1\\
+v_2\\
+\vdots\\
+v_n
+\end{bmatrix}
+\in \mathbb{R}^n
+\]
+
+\begin{exampleblock}{Example}
+\[
+\mathbf{v}=
+\begin{bmatrix}
+3\\
+4
+\end{bmatrix}
+\]
+
+Its magnitude is
+
+\[
+\|\mathbf{v}\|=\sqrt{3^2+4^2}=5.
+\]
+\end{exampleblock}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{2. Coordinate System}
+
+A coordinate system provides a reference framework for representing
+points and vectors.
+
+\begin{itemize}
+    \item In $\mathbb{R}^2$, two perpendicular axes are generally used.
+    \item In $\mathbb{R}^3$, three mutually perpendicular axes are used.
+    \item The origin is represented by the zero vector.
+\end{itemize}
+
+\[
+\mathbf{v}
+=
+x\mathbf{i}+y\mathbf{j}
+\]
+
+For three dimensions,
+
+\[
+\mathbf{v}
+=
+x\mathbf{i}+y\mathbf{j}+z\mathbf{k}
+\]
+
+where
+
+\[
+\mathbf{i}=
+\begin{bmatrix}
+1\\0\\0
+\end{bmatrix},
+\quad
+\mathbf{j}=
+\begin{bmatrix}
+0\\1\\0
+\end{bmatrix},
+\quad
+\mathbf{k}=
+\begin{bmatrix}
+0\\0\\1
+\end{bmatrix}.
+\]
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{3. Vector Addition}
+
+Two vectors of the same dimension can be added component by component.
+
+\[
+\mathbf{u}
+=
+\begin{bmatrix}
+u_1\\u_2\\\vdots\\u_n
+\end{bmatrix},
+\qquad
+\mathbf{v}
+=
+\begin{bmatrix}
+v_1\\v_2\\\vdots\\v_n
+\end{bmatrix}
+\]
+
+Then
+
+\[
+\mathbf{u}+\mathbf{v}
+=
+\begin{bmatrix}
+u_1+v_1\\
+u_2+v_2\\
+\vdots\\
+u_n+v_n
+\end{bmatrix}.
+\]
+
+\begin{exampleblock}{Example}
+\[
+\begin{bmatrix}
+2\\3
+\end{bmatrix}
++
+\begin{bmatrix}
+4\\1
+\end{bmatrix}
+=
+\begin{bmatrix}
+6\\4
+\end{bmatrix}.
+\]
+\end{exampleblock}
+
+\begin{itemize}
+    \item Vector addition is commutative:
+    $\mathbf{u}+\mathbf{v}=\mathbf{v}+\mathbf{u}$.
+    \item It is also associative.
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{4. Scalar Multiplication}
+
+Multiplication of a vector by a scalar changes its magnitude and,
+depending on the sign, its direction.
+
+For scalar $c$,
+
+\[
+c\mathbf{v}
+=
+c
+\begin{bmatrix}
+v_1\\v_2\\\vdots\\v_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+cv_1\\cv_2\\\vdots\\cv_n
+\end{bmatrix}.
+\]
+
+\begin{exampleblock}{Example}
+\[
+3
+\begin{bmatrix}
+2\\-1
+\end{bmatrix}
+=
+\begin{bmatrix}
+6\\-3
+\end{bmatrix}.
+\]
+\end{exampleblock}
+
+\begin{itemize}
+    \item $c>1$: magnitude increases.
+    \item $0<c<1$: magnitude decreases.
+    \item $c<0$: direction is reversed.
+    \item $c=0$: result is the zero vector.
+\end{itemize}
+
+\end{frame}
+
+% =================================================
+% LINEAR COMBINATIONS
+% =================================================
+
+\section{Linear Combinations, Span and Basis}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{5. Linear Combinations}
+
+A \textbf{linear combination} is formed by multiplying vectors by
+scalars and adding the resulting vectors.
+
+Given vectors
+
+\[
+\mathbf{v}_1,\mathbf{v}_2,\ldots,\mathbf{v}_k,
+\]
+
+a linear combination is
+
+\[
+c_1\mathbf{v}_1+
+c_2\mathbf{v}_2+
+\cdots+
+c_k\mathbf{v}_k.
+\]
+
+where $c_1,c_2,\ldots,c_k$ are scalars.
+
+\begin{exampleblock}{Example}
+Let
+
+\[
+\mathbf{v}_1=
+\begin{bmatrix}1\\0\end{bmatrix},
+\quad
+\mathbf{v}_2=
+\begin{bmatrix}0\\1\end{bmatrix}.
+\]
+
+Then
+
+\[
+3\mathbf{v}_1+2\mathbf{v}_2
+=
+\begin{bmatrix}3\\2\end{bmatrix}.
+\]
+\end{exampleblock}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{6. Span of Vectors}
+
+The \textbf{span} of a set of vectors is the collection of all possible
+linear combinations of those vectors.
+
+\[
+\operatorname{span}
+\{\mathbf{v}_1,\mathbf{v}_2,\ldots,\mathbf{v}_k\}
+\]
+
+contains every vector that can be represented as
+
+\[
+c_1\mathbf{v}_1+
+c_2\mathbf{v}_2+\cdots+c_k\mathbf{v}_k.
+\]
+
+\begin{block}{Geometric Interpretation}
+The span describes the space that can be reached using the given
+vectors and scalar multiplication.
+\end{block}
+
+\begin{itemize}
+    \item One non-zero vector in $\mathbb{R}^2$ spans a line.
+    \item Two linearly independent vectors in $\mathbb{R}^2$ span a plane.
+    \item Three independent vectors in $\mathbb{R}^3$ span $\mathbb{R}^3$.
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{7. Basis Vectors}
+
+A \textbf{basis} is a set of vectors that:
+
+\begin{enumerate}
+    \item spans the vector space, and
+    \item is linearly independent.
+\end{enumerate}
+
+The standard basis of $\mathbb{R}^2$ is
+
+\[
+\mathbf{e}_1=
+\begin{bmatrix}
+1\\0
+\end{bmatrix},
+\qquad
+\mathbf{e}_2=
+\begin{bmatrix}
+0\\1
+\end{bmatrix}.
+\]
+
+Every vector
+
+\[
+\mathbf{v}=
+\begin{bmatrix}
+x\\y
+\end{bmatrix}
+\]
+
+can be written as
+
+\[
+\mathbf{v}=x\mathbf{e}_1+y\mathbf{e}_2.
+\]
+
+\begin{block}{Key Idea}
+A basis provides a coordinate system for representing vectors.
+\end{block}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{8. Linear Independence}
+
+Vectors $\mathbf{v}_1,\ldots,\mathbf{v}_k$ are linearly independent if
+
+\[
+c_1\mathbf{v}_1+\cdots+c_k\mathbf{v}_k=\mathbf{0}
+\]
+
+has only the trivial solution
+
+\[
+c_1=c_2=\cdots=c_k=0.
+\]
+
+\begin{itemize}
+    \item Independent vectors contain no redundant direction.
+    \item If one vector can be expressed using the others, the set is
+    linearly dependent.
+    \item A basis must always be linearly independent.
+\end{itemize}
+
+\begin{exampleblock}{Example}
+\[
+\begin{bmatrix}1\\0\end{bmatrix},
+\quad
+\begin{bmatrix}0\\1\end{bmatrix}
+\]
+
+are linearly independent.
+\end{exampleblock}
+
+\end{frame}
+
+% =================================================
+% MATRICES
+% =================================================
+
+\section{Matrices and Linear Transformations}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{9. Matrix Multiplication}
+
+For matrices $A$ and $B$, the product $AB$ is defined when
+
+\[
+\text{number of columns of }A
+=
+\text{number of rows of }B.
+\]
+
+If
+
+\[
+A\in\mathbb{R}^{m\times n},
+\qquad
+B\in\mathbb{R}^{n\times p},
+\]
+
+then
+
+\[
+AB\in\mathbb{R}^{m\times p}.
+\]
+
+The $(i,j)$ entry is
+
+\[
+(AB)_{ij}
+=
+\sum_{k=1}^{n}a_{ik}b_{kj}.
+\]
+
+\begin{block}{Important}
+Matrix multiplication is generally \textbf{not commutative}:
+
+\[
+AB\neq BA.
+\]
+\end{block}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{10. Matrix Multiplication as Composition}
+
+A matrix can represent a linear transformation.
+
+Suppose
+
+\[
+T_1(\mathbf{x})=A\mathbf{x}
+\]
+
+and
+
+\[
+T_2(\mathbf{x})=B\mathbf{x}.
+\]
+
+Applying $T_1$ followed by $T_2$ gives
+
+\[
+T_2(T_1(\mathbf{x}))
+=
+B(A\mathbf{x})
+=
+(BA)\mathbf{x}.
+\]
+
+Thus matrix multiplication represents the
+\textbf{composition of linear transformations}.
+
+\begin{block}{Interpretation}
+\[
+\boxed{\text{Transformation 1}
+\longrightarrow
+\text{Transformation 2}
+\longrightarrow
+\text{Combined transformation}}
+\]
+\end{block}
+
+The order of multiplication is therefore important.
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{11. Three-Dimensional Linear Transformations}
+
+A linear transformation maps vectors from one vector space to another
+while preserving vector addition and scalar multiplication.
+
+\[
+T(\mathbf{u}+\mathbf{v})
+=
+T(\mathbf{u})+T(\mathbf{v})
+\]
+
+and
+
+\[
+T(c\mathbf{u})
+=
+cT(\mathbf{u}).
+\]
+
+In $\mathbb{R}^3$,
+
+\[
+T(\mathbf{x})=A\mathbf{x},
+\qquad
+A\in\mathbb{R}^{3\times3}.
+\]
+
+Common transformations include:
+
+\begin{itemize}
+    \item Rotation
+    \item Reflection
+    \item Scaling
+    \item Shearing
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=15]{12. Examples of 3D Linear Transformations}
+
+A scaling transformation can be represented by
+
+\[
+A=
+\begin{bmatrix}
+s_x&0&0\\
+0&s_y&0\\
+0&0&s_z
+\end{bmatrix}.
+\]
+
+Then
+
+\[
+\begin{bmatrix}
+x'\\y'\\z'
+\end{bmatrix}
+=
+A
+\begin{bmatrix}
+x\\y\\z
+\end{bmatrix}.
+\]
+
+For a rotation about the $z$-axis,
+
+\[
+R_z(\theta)=
+\begin{bmatrix}
+\cos\theta&-\sin\theta&0\\
+\sin\theta&\cos\theta&0\\
+0&0&1
+\end{bmatrix}.
+\]
+
+\begin{block}{Applications}
+3D transformations are fundamental in:
+\begin{itemize}
+    \item Computer graphics
+    \item Computer vision
+    \item Robotics
+    \item Game development
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+% =================================================
+% DETERMINANT AND INVERSE
+% =================================================
+
+\section{Determinants and Inverse Matrices}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{13. Determinant}
+
+The \textbf{determinant} is a scalar value associated with a square matrix.
+
+For
+
+\[
+A=
+\begin{bmatrix}
+a&b\\
+c&d
+\end{bmatrix},
+\]
+
+the determinant is
+
+\[
+\det(A)=ad-bc.
+\]
+
+\begin{block}{Geometric Meaning}
+The absolute value of the determinant represents the factor by which
+a linear transformation changes area or volume.
+\end{block}
+
+\begin{itemize}
+    \item $\det(A)>0$: orientation is preserved.
+    \item $\det(A)<0$: orientation is reversed.
+    \item $\det(A)=0$: space is collapsed into a lower dimension.
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{14. Determinant of a $3\times3$ Matrix}
+
+For
+
+\[
+A=
+\begin{bmatrix}
+a&b&c\\
+d&e&f\\
+g&h&i
+\end{bmatrix},
+\]
+
+the determinant is
+
+\[
+\det(A)
+=
+a(ei-fh)
+-b(di-fg)
++c(dh-eg).
+\]
+
+\begin{block}{Properties}
+\begin{itemize}
+    \item $\det(AB)=\det(A)\det(B)$.
+    \item $\det(A^T)=\det(A)$.
+    \item If two rows are interchanged, the sign changes.
+    \item A matrix is singular if $\det(A)=0$.
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{15. Inverse Matrix}
+
+For a square matrix $A$, its inverse $A^{-1}$ satisfies
+
+\[
+AA^{-1}=A^{-1}A=I.
+\]
+
+The inverse exists only when
+
+\[
+\det(A)\neq0.
+\]
+
+For
+
+\[
+A=
+\begin{bmatrix}
+a&b\\
+c&d
+\end{bmatrix},
+\]
+
+\[
+A^{-1}
+=
+\frac{1}{ad-bc}
+\begin{bmatrix}
+d&-b\\
+-c&a
+\end{bmatrix}.
+\]
+
+\begin{block}{Application}
+The inverse matrix is useful for solving systems:
+
+\[
+A\mathbf{x}=\mathbf{b}
+\]
+
+giving
+
+\[
+\mathbf{x}=A^{-1}\mathbf{b}.
+\]
+\end{block}
+
+\end{frame}
+
+% =================================================
+% COLUMN AND NULL SPACE
+% =================================================
+
+\section{Column Space and Null Space}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{16. Column Space}
+
+The \textbf{column space} of a matrix $A$ is the span of its column vectors.
+
+If
+
+\[
+A=
+\begin{bmatrix}
+|&|& &|\\
+\mathbf{a}_1&\mathbf{a}_2&\cdots&\mathbf{a}_n\\
+|&|& &|
+\end{bmatrix},
+\]
+
+then
+
+\[
+\operatorname{Col}(A)
+=
+\operatorname{span}
+\{\mathbf{a}_1,\mathbf{a}_2,\ldots,\mathbf{a}_n\}.
+\]
+
+\begin{itemize}
+    \item The column space describes all possible outputs $A\mathbf{x}$.
+    \item Its dimension is called the \textbf{rank} of $A$.
+    \item Pivot columns provide a basis for the column space.
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{17. Null Space}
+
+The \textbf{null space} of $A$ is the set of vectors $\mathbf{x}$ satisfying
+
+\[
+A\mathbf{x}=\mathbf{0}.
+\]
+
+It is written as
+
+\[
+\operatorname{Null}(A)
+=
+\{\mathbf{x}:A\mathbf{x}=\mathbf{0}\}.
+\]
+
+\begin{block}{Interpretation}
+The null space contains all input vectors that are mapped to the
+zero vector by the transformation represented by $A$.
+\end{block}
+
+\begin{itemize}
+    \item The null space is a vector space.
+    \item Its dimension is called the \textbf{nullity}.
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{18. Rank--Nullity Theorem}
+
+For a matrix
+
+\[
+A\in\mathbb{R}^{m\times n},
+\]
+
+the rank--nullity theorem states
+
+\[
+\boxed{
+\operatorname{rank}(A)
++
+\operatorname{nullity}(A)
+=
+n
+}
+\]
+
+where $n$ is the number of columns of $A$.
+
+\begin{block}{Meaning}
+\begin{itemize}
+    \item Rank measures the number of independent output directions.
+    \item Nullity measures the number of independent directions mapped
+    to zero.
+\end{itemize}
+\end{block}
+
+This theorem connects the column space and null space of a matrix.
+
+\end{frame}
+
+% =================================================
+% NON-SQUARE MATRICES
+% =================================================
+
+\section{Non-Square Matrices}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{19. Non-Square Matrices}
+
+A matrix does not have to be square.
+
+For example,
+
+\[
+A\in\mathbb{R}^{2\times3}
+\]
+
+has two rows and three columns.
+
+Such a matrix represents a transformation
+
+\[
+T:\mathbb{R}^3\rightarrow\mathbb{R}^2.
+\]
+
+For
+
+\[
+\mathbf{x}\in\mathbb{R}^3,
+\]
+
+the product
+
+\[
+A\mathbf{x}
+\]
+
+produces a vector in $\mathbb{R}^2$.
+
+\begin{block}{Key Idea}
+Non-square matrices allow transformations between spaces
+of different dimensions.
+\end{block}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{20. Transformations Between Dimensions}
+
+Consider
+
+\[
+A=
+\begin{bmatrix}
+1&0&2\\
+0&1&1
+\end{bmatrix}.
+\]
+
+Then
+
+\[
+A:
+\mathbb{R}^3\rightarrow\mathbb{R}^2.
+\]
+
+For
+
+\[
+\mathbf{x}=
+\begin{bmatrix}
+x\\y\\z
+\end{bmatrix},
+\]
+
+we obtain
+
+\[
+A\mathbf{x}
+=
+\begin{bmatrix}
+x+2z\\
+y+z
+\end{bmatrix}.
+\]
+
+\begin{itemize}
+    \item Three input coordinates are transformed into two output coordinates.
+    \item Such transformations are common in dimensionality reduction
+    and data representation.
+\end{itemize}
+
+\end{frame}
+
+% =================================================
+% DOT PRODUCT
+% =================================================
+
+\section{Dot Products and Duality}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{21. Dot Product}
+
+For
+
+\[
+\mathbf{u}=
+\begin{bmatrix}
+u_1\\u_2\\\vdots\\u_n
+\end{bmatrix},
+\qquad
+\mathbf{v}=
+\begin{bmatrix}
+v_1\\v_2\\\vdots\\v_n
+\end{bmatrix},
+\]
+
+the dot product is
+
+\[
+\mathbf{u}\cdot\mathbf{v}
+=
+\sum_{i=1}^{n}u_iv_i.
+\]
+
+For three dimensions,
+
+\[
+\mathbf{u}\cdot\mathbf{v}
+=
+u_1v_1+u_2v_2+u_3v_3.
+\]
+
+Geometrically,
+
+\[
+\mathbf{u}\cdot\mathbf{v}
+=
+\|\mathbf{u}\|\|\mathbf{v}\|\cos\theta.
+\]
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{22. Applications of the Dot Product}
+
+The dot product can be used to determine the angle between vectors.
+
+\[
+\cos\theta
+=
+\frac{\mathbf{u}\cdot\mathbf{v}}
+{\|\mathbf{u}\|\|\mathbf{v}\|}.
+\]
+
+\begin{block}{Orthogonality}
+Two non-zero vectors are perpendicular when
+
+\[
+\mathbf{u}\cdot\mathbf{v}=0.
+\]
+\end{block}
+
+Other applications include:
+
+\begin{itemize}
+    \item Projection of vectors
+    \item Distance calculations
+    \item Computer graphics
+    \item Machine learning similarity measures
+    \item Physics and mechanics
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{23. Duality}
+
+The dot product creates a connection between vectors and linear
+functions.
+
+For a fixed vector $\mathbf{v}$, define
+
+\[
+f(\mathbf{x})
+=
+\mathbf{v}^{T}\mathbf{x}.
+\]
+
+This function maps
+
+\[
+\mathbb{R}^n\rightarrow\mathbb{R}.
+\]
+
+Thus a vector can define a linear functional.
+
+\begin{block}{Concept}
+The correspondence between vectors and linear functionals is an
+important idea behind \textbf{duality} in linear algebra.
+\end{block}
+
+In matrix notation,
+
+\[
+\mathbf{v}^{T}\mathbf{x}
+=
+v_1x_1+\cdots+v_nx_n.
+\]
+
+\end{frame}
+
+% =================================================
+% CROSS PRODUCT
+% =================================================
+
+\section{Cross Products}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{24. Cross Product}
+
+The cross product is defined for vectors in $\mathbb{R}^3$.
+
+For
+
+\[
+\mathbf{u}=(u_1,u_2,u_3)
+\]
+
+and
+
+\[
+\mathbf{v}=(v_1,v_2,v_3),
+\]
+
+\[
+\mathbf{u}\times\mathbf{v}
+=
+\begin{bmatrix}
+u_2v_3-u_3v_2\\
+u_3v_1-u_1v_3\\
+u_1v_2-u_2v_1
+\end{bmatrix}.
+\]
+
+The result is a vector perpendicular to both
+$\mathbf{u}$ and $\mathbf{v}$.
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{25. Properties of Cross Product}
+
+The cross product satisfies
+
+\[
+\mathbf{u}\times\mathbf{v}
+=
+-(\mathbf{v}\times\mathbf{u}).
+\]
+
+Therefore, it is not commutative.
+
+Also,
+
+\[
+\mathbf{u}\times\mathbf{u}
+=
+\mathbf{0}.
+\]
+
+Its magnitude is
+
+\[
+\|\mathbf{u}\times\mathbf{v}\|
+=
+\|\mathbf{u}\|
+\|\mathbf{v}\|
+\sin\theta.
+\]
+
+\begin{block}{Geometric Meaning}
+The magnitude represents the area of the parallelogram formed by
+$\mathbf{u}$ and $\mathbf{v}$.
+\end{block}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{26. Cross Product and Linear Transformations}
+
+The cross product can be expressed using a skew-symmetric matrix.
+
+For
+
+\[
+\mathbf{u}
+=
+\begin{bmatrix}
+u_1\\u_2\\u_3
+\end{bmatrix},
+\]
+
+define
+
+\[
+[\mathbf{u}]_{\times}
+=
+\begin{bmatrix}
+0&-u_3&u_2\\
+u_3&0&-u_1\\
+-u_2&u_1&0
+\end{bmatrix}.
+\]
+
+Then
+
+\[
+\boxed{
+\mathbf{u}\times\mathbf{v}
+=
+[\mathbf{u}]_{\times}\mathbf{v}
+}
+\]
+
+This converts the cross-product operation into matrix multiplication.
+
+\end{frame}
+
+% =================================================
+% CRAMER'S RULE
+% =================================================
+
+\section{Cramer's Rule}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{27. Cramer's Rule}
+
+Cramer's rule provides a method for solving a system of linear
+equations using determinants.
+
+For
+
+\[
+A\mathbf{x}=\mathbf{b},
+\]
+
+where $A$ is an invertible $n\times n$ matrix,
+
+\[
+x_i
+=
+\frac{\det(A_i)}{\det(A)}.
+\]
+
+Here $A_i$ is obtained by replacing the $i$-th column of $A$
+with the vector $\mathbf{b}$.
+
+\begin{block}{Condition}
+Cramer's rule can be applied only when
+
+\[
+\det(A)\neq0.
+\]
+\end{block}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{28. Example of Cramer's Rule}
+
+Consider
+
+\[
+2x+y=5
+\]
+
+\[
+x-y=1.
+\]
+
+The coefficient matrix is
+
+\[
+A=
+\begin{bmatrix}
+2&1\\
+1&-1
+\end{bmatrix}.
+\]
+
+Therefore,
+
+\[
+\det(A)
+=
+(2)(-1)-(1)(1)
+=-3.
+\]
+
+For $x$,
+
+\[
+A_x=
+\begin{bmatrix}
+5&1\\
+1&-1
+\end{bmatrix},
+\qquad
+x=
+\frac{\det(A_x)}{\det(A)}.
+\]
+
+Similarly,
+
+\[
+y=
+\frac{\det(A_y)}{\det(A)}.
+\]
+
+Thus Cramer's rule converts the solution of equations into determinant
+calculations.
+
+\end{frame}
+
+% =================================================
+% CHANGE OF BASIS
+% =================================================
+
+\section{Change of Basis}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{29. Change of Basis}
+
+A vector can have different coordinate representations depending on
+the chosen basis.
+
+Suppose
+
+\[
+B=\{\mathbf{b}_1,\mathbf{b}_2,\ldots,\mathbf{b}_n\}
+\]
+
+is a basis.
+
+Then
+
+\[
+\mathbf{x}
+=
+c_1\mathbf{b}_1+
+c_2\mathbf{b}_2+\cdots+c_n\mathbf{b}_n.
+\]
+
+The coordinate vector relative to basis $B$ is
+
+\[
+[\mathbf{x}]_B
+=
+\begin{bmatrix}
+c_1\\c_2\\\vdots\\c_n
+\end{bmatrix}.
+\]
+
+\begin{block}{Important}
+The geometric vector remains the same, but its coordinate description
+changes with the basis.
+\end{block}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{30. Change-of-Basis Matrix}
+
+Let
+
+\[
+P=
+\begin{bmatrix}
+|&|&&|\\
+\mathbf{b}_1&\mathbf{b}_2&\cdots&\mathbf{b}_n\\
+|&|&&|
+\end{bmatrix}.
+\]
+
+Then
+
+\[
+\mathbf{x}=P[\mathbf{x}]_B.
+\]
+
+Therefore,
+
+\[
+[\mathbf{x}]_B=P^{-1}\mathbf{x}.
+\]
+
+For two bases $B$ and $C$,
+
+\[
+[\mathbf{x}]_C
+=
+P_{C\leftarrow B}
+[\mathbf{x}]_B.
+\]
+
+\begin{block}{Applications}
+Change of basis is important in:
+\begin{itemize}
+    \item Computer graphics
+    \item Robotics
+    \item Physics
+    \item Coordinate transformations
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+% =================================================
+% EIGENVALUES AND EIGENVECTORS
+% =================================================
+
+\section{Eigenvalues and Eigenvectors}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{31. Eigenvectors}
+
+A non-zero vector $\mathbf{v}$ is an \textbf{eigenvector} of matrix
+$A$ if
+
+\[
+A\mathbf{v}
+=
+\lambda\mathbf{v}.
+\]
+
+Here $\lambda$ is a scalar called the eigenvalue.
+
+\begin{block}{Interpretation}
+An eigenvector is a direction that does not change direction when the
+linear transformation $A$ is applied to it.
+
+Only its magnitude and possibly its orientation may change.
+\end{block}
+
+\[
+A\mathbf{v}
+=
+\lambda\mathbf{v}.
+\]
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{32. Eigenvalues}
+
+From
+
+\[
+A\mathbf{v}
+=
+\lambda\mathbf{v},
+\]
+
+we obtain
+
+\[
+A\mathbf{v}-\lambda\mathbf{v}
+=
+\mathbf{0}.
+\]
+
+Therefore,
+
+\[
+(A-\lambda I)\mathbf{v}
+=
+\mathbf{0}.
+\]
+
+For a non-zero solution,
+
+\[
+\boxed{
+\det(A-\lambda I)=0
+}
+\]
+
+This equation is called the \textbf{characteristic equation}.
+
+Its roots are the eigenvalues of $A$.
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{33. Finding Eigenvectors}
+
+After finding an eigenvalue $\lambda$, substitute it into
+
+\[
+(A-\lambda I)\mathbf{v}=0.
+\]
+
+Then solve the resulting homogeneous system.
+
+\begin{enumerate}
+    \item Find $\det(A-\lambda I)$.
+    \item Solve the characteristic equation.
+    \item Obtain the eigenvalues $\lambda_1,\lambda_2,\ldots$.
+    \item For each eigenvalue, solve
+    \[
+    (A-\lambda I)\mathbf{v}=0.
+    \]
+    \item The non-zero solutions are eigenvectors.
+\end{enumerate}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{34. Example: Eigenvalues and Eigenvectors}
+
+Consider
+
+\[
+A=
+\begin{bmatrix}
+2&0\\
+0&3
+\end{bmatrix}.
+\]
+
+The characteristic equation is
+
+\[
+\det
+\begin{bmatrix}
+2-\lambda&0\\
+0&3-\lambda
+\end{bmatrix}
+=0.
+\]
+
+Therefore,
+
+\[
+(2-\lambda)(3-\lambda)=0.
+\]
+
+Hence,
+
+\[
+\lambda_1=2,
+\qquad
+\lambda_2=3.
+\]
+
+Corresponding eigenvectors are
+
+\[
+\mathbf{v}_1=
+\begin{bmatrix}
+1\\0
+\end{bmatrix},
+\qquad
+\mathbf{v}_2=
+\begin{bmatrix}
+0\\1
+\end{bmatrix}.
+\]
+
+\end{frame}
+
+% =================================================
+% VECTOR SPACES
+% =================================================
+
+\section{Vector Spaces}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{35. Vector Spaces}
+
+A \textbf{vector space} is a set of objects called vectors together
+with vector addition and scalar multiplication satisfying specific
+axioms.
+
+Examples include:
+
+\begin{itemize}
+    \item $\mathbb{R}^2$
+    \item $\mathbb{R}^3$
+    \item $\mathbb{R}^n$
+    \item Polynomial spaces
+    \item Spaces of matrices
+    \item Function spaces
+\end{itemize}
+
+A vector space must be closed under:
+
+\[
+\mathbf{u}+\mathbf{v}
+\]
+
+and
+
+\[
+c\mathbf{u}.
+\]
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{36. Important Properties of Vector Spaces}
+
+For vectors $\mathbf{u},\mathbf{v}$ and scalars $a,b$:
+
+\begin{itemize}
+    \item $\mathbf{u}+\mathbf{v}$ belongs to the space.
+    \item $a\mathbf{u}$ belongs to the space.
+    \item Addition is commutative.
+    \item Addition is associative.
+    \item A zero vector exists.
+    \item Every vector has an additive inverse.
+    \item Scalar multiplication is compatible with vector addition.
+\end{itemize}
+
+\begin{block}{Why Vector Spaces Matter}
+Vector spaces provide a common mathematical framework for studying
+vectors, matrices, transformations, data and computational models.
+\end{block}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{37. Subspaces}
+
+A \textbf{subspace} is a subset of a vector space that is itself a
+vector space under the same operations.
+
+A non-empty subset $W$ of $V$ is a subspace if
+
+\[
+\mathbf{u},\mathbf{v}\in W
+\Rightarrow
+\mathbf{u}+\mathbf{v}\in W
+\]
+
+and
+
+\[
+\mathbf{u}\in W,\;c\in\mathbb{R}
+\Rightarrow
+c\mathbf{u}\in W.
+\]
+
+Examples include:
+
+\begin{itemize}
+    \item Lines through the origin
+    \item Planes through the origin
+    \item Column spaces
+    \item Null spaces
+\end{itemize}
+
+\end{frame}
+
+% =================================================
+% SUMMARY
+% =================================================
+
+\section{Summary}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=15]{38. Important Concepts at a Glance}
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.29\textwidth}
+                >{\raggedright\arraybackslash}p{0.60\textwidth}}
+\toprule
+\textbf{Concept} & \textbf{Main Idea}\\
+\midrule
+Vector & Quantity represented by magnitude and direction\\
+Linear combination & Weighted sum of vectors\\
+Span & Set of all possible linear combinations\\
+Basis & Linearly independent spanning set\\
+Matrix & Representation of a linear transformation\\
+Determinant & Measures scaling and invertibility\\
+Column space & Span of the columns\\
+Null space & Solutions of $A\mathbf{x}=0$\\
+Dot product & Measures alignment between vectors\\
+Cross product & Produces a perpendicular vector in $\mathbb{R}^3$\\
+Change of basis & Converts coordinates between bases\\
+Eigenvector & Direction preserved by a transformation\\
+Eigenvalue & Scaling factor associated with an eigenvector\\
+Vector space & Set closed under vector operations\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=15]{39. Applications in Computer Science}
+
+\begin{itemize}
+    \item \textbf{Computer Graphics:} transformations, rotations,
+    scaling and coordinate systems.
+    
+    \item \textbf{Machine Learning:} vectors, matrices, projections,
+    eigenvalues and eigenvectors.
+    
+    \item \textbf{Computer Vision:} matrix transformations and
+    coordinate changes.
+    
+    \item \textbf{Data Science:} vector representations, covariance
+    matrices and dimensionality reduction.
+    
+    \item \textbf{Robotics:} coordinate transformations and
+    three-dimensional transformations.
+    
+    \item \textbf{Artificial Intelligence:} high-dimensional vector
+    spaces and matrix-based computations.
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}[t,shrink=12]{40. Conclusion}
+
+\begin{block}{Module Summary}
+Module 2 provides the mathematical foundation required to understand
+vectors, matrices, transformations and vector spaces.
+\end{block}
+
+\begin{itemize}
+    \item Vectors provide a representation of quantities and data.
+    \item Linear combinations, span and basis describe vector spaces.
+    \item Matrices represent and combine linear transformations.
+    \item Determinants and inverses help analyze transformations and
+    solve systems.
+    \item Dot and cross products provide geometric relationships.
+    \item Eigenvalues and eigenvectors reveal important directions and
+    scaling properties.
+    \item Vector spaces provide the general mathematical framework.
+\end{itemize}
+
+\end{frame}
+
+% -------------------------------------------------
+\begin{frame}{Thank You}
+
+\centering
+
+\vspace{1cm}
+
+{\Huge \textbf{Thank You}}
+
+\vspace{0.8cm}
+
+
+\vspace{1cm}
+
+
+\end{frame}
+
+\end{document}
